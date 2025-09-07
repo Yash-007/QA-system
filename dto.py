@@ -1,4 +1,5 @@
 
+import datetime
 from typing import List
 from pydantic import BaseModel, ConfigDict
 
@@ -10,10 +11,22 @@ class Request(BaseModel):
 class ChatResponse(BaseModel):
     query: str
     response: str
+    user_id: int
+
+class ChatHistory(BaseModel):
+    query: str
+    response: str
+    recorded_at: datetime.datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 class History(BaseModel):
-    status: int
-    message: str
-    history: List[UserChat]
+    chats: List[ChatHistory]
 
-    model_config = ConfigDict(from_attributes=True, arbitrary_types_allowed=True)
+    model_config = ConfigDict(from_attributes=True)
+
+
+class User(BaseModel):
+    name: str
+    email:str
+    password:str
